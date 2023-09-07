@@ -1,3 +1,5 @@
 exportPattern("^[[:alpha:]]+")
 importFrom(leaflet,leaflet)
 importFrom(rgdal,readOGR)
+importFrom(sf,st_bbox,as)
+importFrom(osmdata,opq,add_osm_features,osmdata_sf)

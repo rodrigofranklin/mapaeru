@@ -31,5 +31,25 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL, ano = 2010) {
   unzip(destino, exdir = file.path(tempdir(),"coleta"))
 
   # carrega a malha dos setores da cidade
-  setores <- readOGR("coleta/temp/doc.kml", layer = CIDADE)
+  mapa <- readOGR("coleta/temp/doc.kml", layer = cidade)
+
+  ## Elimina regiões inabitadas
+  # água
+  massa_de_agua <- mapa |>
+    st_bbox() |>
+    opq() |>
+    add_osm_features(c(
+      "\"natural\"=\"strait\"",
+      "\"natural\"=\"bay\"",
+      "\"natural\"=\"water\"",
+      "\"artificial\"=\"water\""
+    )) |>
+    osmdata_sf()
+  massa_de_agua <- massa_de_agua$osm_multipolygons |> as("Spatial")
+
+  mapa <- erase(mapa, massa_de_agua)
+
+  # regiões sem domicílios
+
+  return(mapa)
 }
