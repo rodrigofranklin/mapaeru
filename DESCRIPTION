@@ -14,7 +14,7 @@ Description: Este pacote fornece ferramentas para visualizar e manipular dados
           tabelas que auxiliam na interpretação e utilização dos dados 
           censitários.
 License: GPL-3
-Encoding: Latin-1
+Encoding: latin-1
 LazyData: true
 Imports: 
     base,
