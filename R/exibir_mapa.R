@@ -8,7 +8,7 @@
 #'
 #' @return Um objeto leaflet para visualização interativa.
 #'
-#' @importFrom leaflet leaflet addProviderTiles addPolygons addLegend fitBounds leafletOptions colorBin
+#' @importFrom leaflet leaflet addProviderTiles addPolygons addLegend fitBounds leafletOptions colorBin providers
 #' @importFrom sp bbox
 #' @importFrom magrittr %>%
 #'
