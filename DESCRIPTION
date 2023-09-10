@@ -1,16 +1,29 @@
 Package: mapaeru
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Criação de mapa para as cidades do ES com base nos dados do Censo (IBGE)
+Version: 0.6.0
+Author: Rodrigo Franklin
+Maintainer: Rodrigo Franklin <rodrigo.franklin@ufes.br>
+Description: Este pacote fornece ferramentas para visualizar e manipular dados
+          geográficos relacionados a setores censitários de cidades brasileiras.
+          Ele permite aos usuários obter malhas de setores censitários, 
+          atualizar essas malhas com dados específicos, visualizar os dados em 
+          um mapa interativo e realizar várias operações de limpeza e 
+          manipulação, como eliminar regiões inabitadas, áreas de água e áreas 
+          sobrepostas. Além disso, o pacote inclui um dicionário de dados e 
+          tabelas que auxiliam na interpretação e utilização dos dados 
+          censitários.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports:
-  leaflet,
-  rgdal,
-  osmdata,
-  sf
+Imports: 
+    base,
+    sp,
+    sf,
+    scales,
+    raster,
+    osmdata,
+    rgeos,
+    magrittr,
+    leaflet
+RoxygenNote: 7.2.3
