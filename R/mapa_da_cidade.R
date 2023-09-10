@@ -27,6 +27,7 @@
 #' expressao_dados <- "2.V002/1.V001" # Exemplo de expressão: média de moradores por domicílio
 #' mapa <- mapa_da_cidade(cidade = "VITÓRIA", dados = expressao_dados)
 #'
+#' @encoding UTF-8
 #' @export
 mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL, ano = 2010,
                            eliminar_inabitadas = FALSE,

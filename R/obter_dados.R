@@ -18,6 +18,7 @@
 #' # Suponha que expressao seja uma expressão válida que referencia variáveis nos dados do censo:
 #' # obter_dados(expressao)
 #'
+#' @encoding UTF-8
 #' @export
 obter_dados <- function(expressao) {
 
@@ -54,9 +55,7 @@ obter_dados <- function(expressao) {
 
     # Se a coluna não for numérica, tentar convertê-la
     if (!is.numeric(df[[variavel]])) {
-      df[[variavel]] <- as.numeric(as.character(df[[variavel]]))
-      # Substituir valores não numéricos por NA
-      df[[variavel]][is.na(df[[variavel]])] <- NA
+      suppressWarnings(df[[variavel]] <- as.numeric(as.character(df[[variavel]])))
     }
 
     return(df[, c("Cod_setor", variavel)])

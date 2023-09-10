@@ -20,6 +20,7 @@
 #' # Suponha que sp_df seja um SpatialPolygonsDataFrame e expressao uma expressão válida:
 #' # atualizar_dados(sp_df, expressao)
 #'
+#' @encoding UTF-8
 #' @export
 atualizar_dados <- function(sp_df, expressao) {
   # Obter os resultados da expressão usando a função obter_dados

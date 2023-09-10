@@ -8,6 +8,7 @@
 #'   \item{Descrição}{Caracter. Descrição detalhada da variável. Exemplo: "Domicílios particulares permanentes ou pessoas responsáveis por domicílios particulares permanentes".}
 #' }
 #' @source IBGE, Censo 2010.
+#' @encoding UTF-8
 #' @name dicionario
 #' @docType data
 #' @usage dicionario
@@ -23,6 +24,7 @@ NULL
 #'   \item{Nome}{Caracter. Nome do arquivo da tabela. Exemplo: "Basico_ES.csv".}
 #' }
 #' @source IBGE, Censo 2010.
+#' @encoding UTF-8
 #' @name tabelas
 #' @docType data
 #' @usage tabelas

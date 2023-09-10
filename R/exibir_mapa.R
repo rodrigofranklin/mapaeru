@@ -17,6 +17,7 @@
 #' # Suponha que 'mapa' seja um SpatialPolygonsDataFrame válido:
 #' # exibir_mapa(mapa)
 #'
+#' @encoding UTF-8
 #' @export
 exibir_mapa <- function(mapa) {
 
