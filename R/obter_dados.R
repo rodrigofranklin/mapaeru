@@ -39,7 +39,7 @@ obter_dados <- function(expressao) {
         unzip = "unzip")
     }
 
-    df <- read.csv2(arquivo, stringsAsFactors = FALSE, fileEncoding = "latin1")
+    df <- read.csv2(arquivo, stringsAsFactors = FALSE)
 
     # Converter Cod_setor para texto
     df$Cod_setor <- as.character(df$Cod_setor)
