@@ -8,7 +8,6 @@
 mapa_da_cidade(
   cidade = "VITÓRIA",
   dados = NULL,
-  ano = 2010,
   eliminar_inabitadas = FALSE,
   eliminar_agua = FALSE,
   eliminar_sobrepostas = FALSE
@@ -18,8 +17,6 @@ mapa_da_cidade(
 \item{cidade}{Nome da cidade para a qual o mapa deve ser obtido. O padrão é "VITÓRIA".}
 
 \item{dados}{Expressão ou coluna de dados a serem adicionados ao mapa.}
-
-\item{ano}{Ano do censo. Atualmente, apenas 2010 é suportado.}
 
 \item{eliminar_inabitadas}{Se TRUE, elimina regiões inabitadas do mapa.}
 

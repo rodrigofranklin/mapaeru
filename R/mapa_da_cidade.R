@@ -5,7 +5,6 @@
 #'
 #' @param cidade Nome da cidade para a qual o mapa deve ser obtido. O padrão é "VITÓRIA".
 #' @param dados Expressão ou coluna de dados a serem adicionados ao mapa.
-#' @param ano Ano do censo. Atualmente, apenas 2010 é suportado.
 #' @param eliminar_inabitadas Se TRUE, elimina regiões inabitadas do mapa.
 #' @param eliminar_agua Se TRUE, elimina massas de água do mapa.
 #' @param eliminar_sobrepostas Se TRUE, elimina áreas sobrepostas no mapa.
@@ -14,6 +13,7 @@
 #'
 #' @importFrom sp bbox
 #' @importFrom methods as
+#' @importFrom utils download.file unzip flush.console
 #' @importFrom sf st_read st_zm st_bbox st_simplify
 #' @importFrom osmdata opq add_osm_features osmdata_sf
 #' @importFrom rgeos gArea gIntersects union
@@ -29,7 +29,7 @@
 #'
 #' @encoding UTF-8
 #' @export
-mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL, ano = 2010,
+mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
                            eliminar_inabitadas = FALSE,
                            eliminar_agua = FALSE,
                            eliminar_sobrepostas = FALSE) {
@@ -37,11 +37,7 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL, ano = 2010,
   cidade <- toupper(cidade)
 
   # Definição da URL do Setor
-  if (ano == 2010) {
-    setor_url <- "http://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2010/setores_censitarios_kmz/32-ES.kmz"
-  } else if (ano == 2000) {
-    # Implementação futura
-  }
+  setor_url <- "http://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2010/setores_censitarios_kmz/32-ES.kmz"
 
   destino <- file.path(tempdir(), basename(setor_url))
 
