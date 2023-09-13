@@ -11,6 +11,7 @@
 #' @import leaflet
 #' @importFrom leaflet leaflet addProviderTiles addPolygons addLegend fitBounds leafletOptions colorBin providers providerTileOptions
 #' @importFrom sp bbox
+#' @importFrom htmltools HTML
 #' @importFrom magrittr %>%
 #'
 #' @examples
