@@ -12,7 +12,8 @@
 #'
 #' @return Um `data.frame` contendo os resultados da expressão fornecida.
 #'
-#' @importFrom utils download.file unzip read.csv2
+#' @importFrom utils download.file read.csv2
+#' @importFrom zip unzip
 #'
 #' @examples
 #' # Suponha que expressao seja uma expressão válida que referencia variáveis nos dados do censo:
@@ -33,11 +34,10 @@ obter_dados <- function(expressao) {
       destino_censo <- file.path(tempdir(), basename(censo_url))
       download.file(censo_url, destino_censo, mode = "wb")
 
-      unzip(
+      zip::unzip(
         destino_censo,
         exdir = file.path(tempdir(),"coleta"),
-        junkpaths = TRUE,
-        unzip = "unzip")
+        junkpaths = TRUE)
     }
 
     df <- read.csv2(arquivo, stringsAsFactors = FALSE)

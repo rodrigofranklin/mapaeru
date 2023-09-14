@@ -13,7 +13,8 @@
 #'
 #' @importFrom sp bbox
 #' @importFrom methods as
-#' @importFrom utils download.file unzip flush.console
+#' @importFrom utils download.file flush.console
+#' @importFrom zip unzip
 #' @importFrom sf st_read st_zm st_bbox st_simplify
 #' @importFrom osmdata opq add_osm_features osmdata_sf
 #' @importFrom rgeos gArea gIntersects union
@@ -45,7 +46,7 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
   if (!file.exists(destino)) {
     print("Obtendo malha dos setores censitários...")
     download.file(setor_url, destino, mode = "wb")
-    unzip(destino, exdir = file.path(tempdir(),"coleta"))
+    zip::unzip(destino, exdir = file.path(tempdir(),"coleta"))
   }
 
   # Carregar a malha dos setores da cidade
@@ -67,7 +68,7 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
 
     if (!file.exists(destino_censo)) {
       download.file(censo_url, destino_censo, mode = "wb")
-      unzip(destino_censo, exdir = file.path(tempdir(),"coleta"), junkpaths = TRUE, unzip = "unzip")
+      zip::unzip(destino_censo, exdir = file.path(tempdir(),"coleta"), junkpaths = TRUE)
     }
 
     domicilio_basico_censo2010 <- read.csv2(file.path(tempdir(),"coleta/Basico_ES.csv"))
