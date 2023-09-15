@@ -17,13 +17,15 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    base,
     sp,
     sf,
-    scales,
     raster,
     osmdata,
     rgeos,
     magrittr,
+    htmltools,
+    maptools,
+    methods,
+    zip,
     leaflet
 RoxygenNote: 7.2.3

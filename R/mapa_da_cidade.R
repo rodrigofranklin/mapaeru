@@ -12,7 +12,7 @@
 #' @return Um objeto SpatialPolygonsDataFrame contendo o mapa da cidade com os dados do censo.
 #'
 #' @importFrom sp bbox
-#' @importFrom methods as
+#' @importFrom methods as slot slot<-
 #' @importFrom utils download.file flush.console
 #' @importFrom zip unzip
 #' @importFrom sf st_read st_zm st_bbox st_simplify st_as_sf st_difference
