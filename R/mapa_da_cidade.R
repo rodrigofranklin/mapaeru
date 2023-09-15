@@ -15,10 +15,11 @@
 #' @importFrom methods as
 #' @importFrom utils download.file flush.console
 #' @importFrom zip unzip
-#' @importFrom sf st_read st_zm st_bbox st_simplify
+#' @importFrom sf st_read st_zm st_bbox st_simplify st_as_sf st_difference
 #' @importFrom osmdata opq add_osm_features osmdata_sf
 #' @importFrom rgeos gArea gIntersects union
-#' @importFrom raster erase
+#' @importFrom raster erase bind intersect
+#' @importFrom maptools unionSpatialPolygons
 #' @importFrom magrittr %>%
 #'
 #' @seealso Para obter detalhes sobre as variáveis disponíveis para uso na expressão de dados, consulte o data.frame \code{dicionario}.
@@ -37,20 +38,20 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
 
   cidade <- toupper(cidade)
 
-  # Definição da URL do Setor
-  setor_url <- "http://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2010/setores_censitarios_kmz/32-ES.kmz"
-
-  destino <- file.path(tempdir(), basename(setor_url))
+  mapa <- file.path(tempdir(),"coleta/doc.kml")
 
   # Verificar se o arquivo já existe
-  if (!file.exists(destino)) {
+  if (!file.exists(mapa)) {
     print("Obtendo malha dos setores censitários...")
+    # Definição da URL do Setor
+    setor_url <- "http://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_de_setores_censitarios__divisoes_intramunicipais/censo_2010/setores_censitarios_kmz/32-ES.kmz"
+    destino <- file.path(tempdir(), basename(setor_url))
     download.file(setor_url, destino, mode = "wb")
     zip::unzip(destino, exdir = file.path(tempdir(),"coleta"))
   }
 
   # Carregar a malha dos setores da cidade
-  mapa <- file.path(tempdir(),"coleta/doc.kml") |>
+  mapa <- mapa |>
     st_read(layer = cidade) |>
     st_zm(drop=TRUE) |>
     as("Spatial")
@@ -62,11 +63,12 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
 
   # Eliminação de regiões inabitadas
   if (eliminar_inabitadas) {
-    print("Obtendo dados dos domicílios...")
-    censo_url <- "http://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/ES_20171016.zip"
-    destino_censo <- file.path(tempdir(), basename(censo_url))
+    arquivo_basico <- file.path(tempdir(),"coleta/Basico_ES.csv")
 
-    if (!file.exists(destino_censo)) {
+    if (!file.exists(arquivo_basico)) {
+      print("Obtendo dados dos domicílios...")
+      censo_url <- "http://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/ES_20171016.zip"
+      destino_censo <- file.path(tempdir(), basename(censo_url))
       download.file(censo_url, destino_censo, mode = "wb")
       zip::unzip(destino_censo, exdir = file.path(tempdir(),"coleta"), junkpaths = TRUE)
     }
@@ -117,12 +119,27 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
         "\"natural\"=\"water\""
       )) |>
       osmdata_sf(quiet = FALSE)
-    massa_de_agua <- massa_de_agua$osm_multipolygons |>
+
+    massa1 <- massa_de_agua$osm_multipolygons |>
       st_simplify(dTolerance = 0.01) |>
       as("Spatial")
 
+    massa2 <- massa_de_agua$osm_polygons |>
+      st_simplify(dTolerance = 0.01) |>
+      as("Spatial")
 
-    mapa <- raster::erase(mapa, massa_de_agua)
+    massa <- raster::bind(massa1,massa2)
+    massa <- unionSpatialPolygons(massa, IDs=rep(1, length(massa)))
+
+    sf_mapa <- st_as_sf(mapa)
+    sf_massa <- st_as_sf(massa)
+    resultado <- try({
+      mapa_sf <- st_difference(sf_mapa , sf_massa)
+      mapa <- mapa_sf |> as("Spatial")
+    }, silent = TRUE)
+    if (inherits(resultado, "try-error")) {
+      print("Eliminação das massas de água não foi bem sucedida.")
+    }
   }
 
   return(mapa)

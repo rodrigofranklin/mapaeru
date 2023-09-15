@@ -36,13 +36,12 @@ exibir_mapa <- function(mapa) {
 
   # Adicionar mapa de fundo
   mapa_leaflet <- mapa_leaflet %>%
-    addProviderTiles(providers$CartoDB.PositronNoLabels, options = providerTileOptions(opacity = 0.5))
+    addProviderTiles(providers$CartoDB, options = providerTileOptions(opacity = 0.5))
 
   # Verificar se a coluna 'dados' existe
   if ("dados" %in% names(mapa)) {
     # Definir paleta de cores com intervalos fixos
-    bins <- pretty(mapa$dados, n = 5)
-    pal <- colorBin("YlOrRd", domain = mapa$dados, bins = bins)
+    pal <- colorNumeric("YlOrRd", domain = mapa$dados, na.color = "transparent")
 
     # Adicionar polígonos com cores baseadas nos dados e rótulos mostrando os valores
     mapa_leaflet <- mapa_leaflet %>%
@@ -59,7 +58,7 @@ exibir_mapa <- function(mapa) {
         )
       ) %>%
       # Adicionar legenda com intervalos fixos
-      addLegend(pal = pal, values = ~dados, title = "Dados", bins = bins)
+      addLegend(pal = pal, values = ~dados, title = "Dados")
 
   } else {
     # Adicionar polígonos com rótulos baseados na coluna 'Description'
@@ -76,10 +75,6 @@ exibir_mapa <- function(mapa) {
         )
       )
   }
-
-  # Adicionar rótulos
-  mapa_leaflet <- mapa_leaflet %>%
-    addProviderTiles(providers$CartoDB.PositronOnlyLabels)
 
   # Definir zoom inicial
   mapa_leaflet <- mapa_leaflet %>%
