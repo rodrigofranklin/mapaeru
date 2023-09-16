@@ -56,6 +56,10 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
     st_zm(drop=TRUE) |>
     as("Spatial")
 
+  if ("description" %in% names(mapa)) {
+    mapa$Description <- mapa$description
+  }
+
   # Se "dados" for fornecido, atualize o mapa
   if (!is.null(dados)) {
     mapa <- atualizar_dados(mapa, dados)
@@ -120,23 +124,25 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
       )) |>
       osmdata_sf(quiet = FALSE)
 
-    massa1 <- massa_de_agua$osm_multipolygons |>
-      st_simplify(dTolerance = 0.01) |>
-      as("Spatial")
-
-    massa2 <- massa_de_agua$osm_polygons |>
-      st_simplify(dTolerance = 0.01) |>
-      as("Spatial")
-
-    massa <- raster::bind(massa1,massa2)
-    massa <- unionSpatialPolygons(massa, IDs=rep(1, length(massa)))
-
-    sf_mapa <- st_as_sf(mapa)
-    sf_massa <- st_as_sf(massa)
     resultado <- try({
+      massa1 <- massa_de_agua$osm_multipolygons |>
+        st_simplify(dTolerance = 0.01) |>
+        as("Spatial")
+
+      massa2 <- massa_de_agua$osm_polygons |>
+        st_simplify(dTolerance = 0.01) |>
+        as("Spatial")
+
+      massa <- raster::bind(massa1,massa2)
+      massa <- unionSpatialPolygons(massa, IDs=rep(1, length(massa)))
+
+      sf_mapa <- st_as_sf(mapa)
+      sf_massa <- st_as_sf(massa)
+
       mapa_sf <- st_difference(sf_mapa , sf_massa)
       mapa <- mapa_sf |> as("Spatial")
     }, silent = TRUE)
+
     if (inherits(resultado, "try-error")) {
       print("Eliminação das massas de água não foi bem sucedida.")
     }
