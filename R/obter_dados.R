@@ -63,6 +63,8 @@ obter_dados <- function(expressao) {
 
   # Avalie a expressão substituída
   resultado_dado <- eval(parse(text = expressao_substituida))
+  resultado_dado[is.infinite(resultado_dado)] <- NA
+  resultado_dado[is.nan(resultado_dado)] <- NA
 
   # Criar dataframe de resultado
   resultado_df <- data.frame(Cod_setor = get_data("1", "V001")$Cod_setor,
