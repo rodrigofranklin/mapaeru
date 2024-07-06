@@ -71,13 +71,13 @@ mapa_da_cidade <- function(cidade = "VITÓRIA", dados = NULL,
 
     if (!file.exists(arquivo_basico)) {
       print("Obtendo dados dos domicílios...")
-      censo_url <- "http://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/ES_20171016.zip"
+      censo_url <- "http://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/ES_20231030.zip"
       destino_censo <- file.path(tempdir(), basename(censo_url))
       download.file(censo_url, destino_censo, mode = "wb")
       zip::unzip(destino_censo, exdir = file.path(tempdir(),"coleta"), junkpaths = TRUE)
     }
 
-    domicilio_basico_censo2010 <- read.csv2(file.path(tempdir(),"coleta/Basico_ES.csv"))
+    domicilio_basico_censo2010 <- read.csv2(file.path(tempdir(),"coleta/Basico_ES.csv"), fileEncoding = "ISO-8859-1")
     mapa <- mapa[mapa$Name %in% domicilio_basico_censo2010$Cod_setor,]
   }
 

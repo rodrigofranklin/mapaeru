@@ -1,7 +1,7 @@
 Package: mapaeru
 Type: Package
 Title: Criação de mapa para as cidades do ES com base nos dados do Censo (IBGE)
-Version: 0.6.6
+Version: 0.6.7
 Author: Rodrigo Franklin
 Maintainer: Rodrigo Franklin <rodrigo.franklin@ufes.br>
 Description: Este pacote fornece ferramentas para visualizar e manipular dados

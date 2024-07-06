@@ -29,13 +29,13 @@ obter_dados <- function(expressao) {
 
     if (!file.exists(arquivo)) {
       print("Obtendo dados dos domicílios...")
-      censo_url <- "http://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/ES_20171016.zip"
+      censo_url <- "http://ftp.ibge.gov.br/Censos/Censo_Demografico_2010/Resultados_do_Universo/Agregados_por_Setores_Censitarios/ES_20231030.zip"
       destino_censo <- file.path(tempdir(), basename(censo_url))
       download.file(censo_url, destino_censo, mode = "wb")
       zip::unzip(destino_censo, exdir = file.path(tempdir(),"coleta"), junkpaths = TRUE)
     }
 
-    df <- read.csv2(arquivo, stringsAsFactors = FALSE)
+    df <- read.csv2(arquivo, stringsAsFactors = FALSE, fileEncoding = "ISO-8859-1")
 
     # Converter Cod_setor para texto
     df$Cod_setor <- as.character(df$Cod_setor)
